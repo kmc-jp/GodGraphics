@@ -1,0 +1,5 @@
+<h1><%= @folder.title %></h1>
+<p><%= @folder.caption %></p>
+<% @graphics.all.each do |graphic| %>
+    <%= link_to image_tag(graphic.image[:large].url), folder_graphic_path(@folder,graphic) %>
+<% end %>

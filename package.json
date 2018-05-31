@@ -1,14 +1,15 @@
 {
-  "name": "newgoduploader",
-  "private": true,
   "dependencies": {
     "@rails/webpacker": "^3.5.3",
     "babel-preset-react": "^6.24.1",
+    "material-ui": "^1.0.0-beta.47",
+    "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.1.4"
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^2.11.1"
   }
 }
