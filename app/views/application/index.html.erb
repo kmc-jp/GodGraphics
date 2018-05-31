@@ -1,0 +1,10 @@
+<% @folders.each do |folder| %>
+    <div style="width:20%;height:300px;float:left;">
+        <p><%= folder.title %></p>
+        <p><%= folder.caption %></p>
+        <% if folder.graphics.count > 0 then %>
+            <% graphic = folder.graphics.first %>
+            <p><%= link_to image_tag(graphic.image[:small].url), folder_path(folder) %></p>
+        <% end %>
+    </div>
+<% end %>
