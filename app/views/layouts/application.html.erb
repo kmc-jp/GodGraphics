@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Newgoduploader</title>
+    <title>God Graphics Uploader</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -12,8 +12,8 @@
   </head>
 
   <body>
-    <%= link_to "God Graphics Uploader" , "/" %>
-    <%=  button_to "upload", {:controller => "upload"} ,:method => 'get' %>
+    <div id="header"></div>
+    <%= javascript_pack_tag "header" %>
     <%= yield %>
   </body>
 </html>

@@ -1,9 +1,9 @@
 {
   "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.1.0",
     "@rails/webpacker": "^3.5.3",
     "babel-preset-react": "^6.24.1",
-    "material-ui": "^1.0.0-beta.47",
-    "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"

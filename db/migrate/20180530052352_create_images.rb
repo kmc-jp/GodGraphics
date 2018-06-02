@@ -1,6 +1,6 @@
-class CreateGraphics < ActiveRecord::Migration[5.2]
+class CreateImages < ActiveRecord::Migration[5.2]
   def change
-    create_table :graphics do |t|
+    create_table :images do |t|
       t.text :image_data
       t.belongs_to :folder, index: true
       t.timestamps
