@@ -1,0 +1,8 @@
+<div id="container" 
+    data-id='<%= @folder.id %>' 
+    data-title="<%= @folder.title %>"
+    data-caption="<%= @folder.caption %>"
+    data-tags="<%= @folder.tags.map{|tag| tag.name}.join(' ') %>"
+    data-images="<%= @folder.images.map{|image| image.image[:small].url}.join(' ') %>" >
+</div>
+<%= javascript_pack_tag 'edit_folder_page' %>

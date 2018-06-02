@@ -8,5 +8,9 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker')
-require('./hello_react.jsx')
-require('./upload.jsx')
+require('./toppage.jsx')
+require('./uploadpage.jsx')
+require('./folderpage.jsx')
+require('./header.jsx')
+require('./userpage.jsx')
+require('./edit_folder_page.jsx')
