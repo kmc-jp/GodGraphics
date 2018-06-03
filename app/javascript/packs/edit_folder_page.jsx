@@ -18,13 +18,15 @@ function EditForm(props) {
     );
 }
 
+var dom = document.querySelector('#container');
+
 ReactDOM.render(
     <EditForm
-        id={document.querySelector('#container').getAttribute('data-id')}
-        title={document.querySelector('#container').getAttribute('data-title')}
-        caption={document.querySelector('#container').getAttribute('data-caption')}
-        tags={document.querySelector('#container').getAttribute('data-tags')}
-        images={document.querySelector('#container').getAttribute('data-images')}
+        id={dom.getAttribute('data-id')}
+        title={dom.getAttribute('data-title')}
+        caption={dom.getAttribute('data-caption')}
+        tags={dom.getAttribute('data-tags')}
+        images={dom.getAttribute('data-images')}
     />,
-    document.querySelector('#container')
+    dom
 );

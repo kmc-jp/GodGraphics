@@ -9,9 +9,12 @@ const styles = theme => ({
     root: {
         position: "absolute",
         top: "96px",
-        width: "96%",
-        padding: 16
+        left: 16,
+        right: 16
     },
+    paper: {
+        padding: 16
+    }
 });
 
 class User extends React.Component {
@@ -41,20 +44,23 @@ class User extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <Paper className={classes.root}>
-                <Grid container padding={24}>
-                    <Grid item sm={12}>
-                        <Typography variant="title">
-                            {this.state.user.display_name}
-                        </Typography>
-                        <Typography>
-                            投稿枚数: {this.state.user.post_num}
-                        </Typography>
+            <div className={classes.root}>
+                <Paper className={classes.paper}>
+                    <Grid container padding={24}>
+                        <Grid item sm={12}>
+                            <Typography variant="title">
+                                {this.state.user.display_name}
+                            </Typography>
+                            <Typography>
+                                投稿枚数: {this.state.user.post_num}
+                            </Typography>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Divider />
-                <Folders label="投稿画像" folders={this.state.user.folders} onDelete={this.loadUser} deletable={this.state.is_login_user} />
-            </ Paper>
+                </ Paper>
+                <Paper className={classes.paper}>
+                    <Folders label="投稿画像" folders={this.state.user.folders} onDelete={this.loadUser} deletable={this.state.is_login_user} />
+                </ Paper>
+            </div>
         );
     }
 }

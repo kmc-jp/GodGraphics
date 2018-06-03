@@ -47,3 +47,9 @@ yarn-debug.log*
 
 # public
 /public
+
+# config
+/config/config.yml
+
+# env
+.env
