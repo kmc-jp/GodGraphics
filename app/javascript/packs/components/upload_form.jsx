@@ -8,8 +8,16 @@ import Grid from "@material-ui/core/Grid"
 import LimitedInput from "./limited_input"
 import InputTag from "./input_tag"
 import Paper from "@material-ui/core/Paper";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Input from '@material-ui/core/Input';
+import Select from '@material-ui/core/Select';
+import { MenuItem } from '@material-ui/core';
+import Downshift from 'downshift';
+import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField'
 
-const styles = {
+const styles = theme => ({
 
     root: {
         position: "absolute",
@@ -17,10 +25,83 @@ const styles = {
         width: "96%",
         padding: 16
     },
-}
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+    paper: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+        bottom: 40,
+    },
+});
 
 const TITLE_MAX = 33;
 const CAPTION_MAX = 3001;
+
+
+
+function renderInput(inputProps) {
+    const { InputProps, classes, ref, ...other } = inputProps;
+
+    return (
+        <TextField
+            InputProps={{
+                inputRef: ref,
+                classes: {
+                    root: classes.inputRoot,
+                },
+                ...InputProps,
+            }}
+            {...other}
+        />
+    );
+}
+
+function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
+    const isHighlighted = highlightedIndex === index;
+    const isSelected = (selectedItem || '').indexOf(suggestion) > -1;
+
+    return (
+        <MenuItem
+            {...itemProps}
+            key={suggestion}
+            selected={isHighlighted}
+            component="div"
+            style={{
+                fontWeight: isSelected ? 500 : 400,
+            }}
+        >
+            {suggestion}
+        </MenuItem>
+    );
+}
+renderSuggestion.propTypes = {
+    highlightedIndex: PropTypes.number,
+    index: PropTypes.number,
+    itemProps: PropTypes.object,
+    selectedItem: PropTypes.string,
+    suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
+};
+
+function getChannels(channels, inputValue) {
+    let count = 0;
+
+    return channels.filter(channel => {
+        const keep =
+            (!inputValue || channel.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
+            count < 5;
+
+        if (keep) {
+            count += 1;
+        }
+
+        return keep;
+    });
+}
 
 class UploadForm extends React.Component {
 
@@ -40,9 +121,14 @@ class UploadForm extends React.Component {
             },
             tags: {
             },
-            can_submit: false
+            can_submit: false,
+            postSlack: false,
+            postSlackChannel: "graphics",
+            slackChannels: [],
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChangeSlack = this.handleChangeSlack.bind(this);
+        this.handleChangeSlackChannel = this.handleChangeSlackChannel.bind(this);
         this.updateInput = this.updateInput.bind(this);
     }
 
@@ -63,14 +149,36 @@ class UploadForm extends React.Component {
             formData.append("tags[]", tags.tags[i]);
         }
         if (this.props.id) formData.append("id", this.props.id);
+        formData.append("post_slack", this.state.postSlack);
+        formData.append("post_slack_channel", this.state.postSlackChannel);
 
         const path = this.props.editMode ? './update' : './upload';
         fetch(path, {
-            body: formData, // must match 'Content-Type' header
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: formData,
+            method: 'post',
         }).then(response => {
             window.location.href = response.url;
         })
+    }
+
+    handleChangeSlack(e) {
+        var target = e.target;
+        this.setState({
+            postSlack: target.checked
+        });
+    }
+    handleChangeSlackChannel(e) {
+        var target = e.target;
+        if (target) {
+            this.setState({
+                postSlackChannel: target.value
+            });
+        } else {
+            this.setState({
+                postSlackChannel: e
+            });
+        }
+
     }
 
     updateInput(name, value) {
@@ -89,6 +197,16 @@ class UploadForm extends React.Component {
         this.setState(state);
     }
 
+    componentDidMount() {
+        fetch('./slack_channels', { method: 'get' }).then(response => {
+            return response.json();
+        }).then(data => {
+            this.setState({
+                slackChannels: data
+            });
+        })
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -98,7 +216,7 @@ class UploadForm extends React.Component {
             <Paper className={classes.root}>
                 <form onSubmit={this.handleSubmit} >
                     <Grid container spacing={24} >
-                        <Grid item sm={12}>
+                        <Grid item xs={12}>
                             <MultipleFileForm
                                 name="images"
                                 updateInput={this.updateInput}
@@ -107,16 +225,17 @@ class UploadForm extends React.Component {
                             />
                         </Grid>
 
-                        <Grid item sm={12}>
+                        <Grid item sm={4}>
                             <LimitedInput
                                 name="title"
                                 label="タイトル"
                                 max={TITLE_MAX}
                                 updateInput={this.updateInput}
                                 text={this.props.title}
+                                fullWidth
                             />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={8}>
                             <LimitedInput
                                 name="caption"
                                 label="キャプション"
@@ -129,21 +248,70 @@ class UploadForm extends React.Component {
                                 text={this.props.caption}
                             />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={8}>
                             <InputTag
                                 name="tags"
                                 updateState={this.updateInput}
                                 tags={this.props.tags}
                             />
                         </Grid>
-                        <Grid item sm={12}>
-                            <Button disabled={!this.state.can_submit} color="primary" variant="raised" type="submit">
+                        <Grid item sm={4} >
+                            <div hidden={this.props.editMode}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.postSlack}
+                                            onChange={this.handleChangeSlack}
+                                        />
+                                    }
+                                    label="Slackへの投稿"
+                                />
+                                <Downshift
+                                    onChange={this.handleChangeSlackChannel}
+                                >
+                                    {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
+                                        <div className={classes.container}>
+                                            {renderInput({
+                                                fullWidth: true,
+                                                classes,
+                                                InputProps: getInputProps({
+                                                    placeholder: 'チャンネル名を選択',
+                                                    value: this.state.postSlackChannel,
+                                                    onChange: this.handleChangeSlackChannel,
+                                                }),
+                                                disabled: !this.state.postSlack,
+                                            })}
+                                            {isOpen ? (
+                                                <Paper className={classes.paper} square>
+                                                    {getChannels(this.state.slackChannels, inputValue).map((suggestion, index) =>
+                                                        renderSuggestion({
+                                                            suggestion,
+                                                            index,
+                                                            itemProps: getItemProps({ item: suggestion }),
+                                                            highlightedIndex,
+                                                            selectedItem,
+                                                        }),
+                                                    )}
+                                                </Paper>
+                                            ) : null}
+                                        </div>
+                                    )}
+                                </Downshift>
+                            </div>
+                            < Button
+                                fullWidth
+                                disabled={!this.state.can_submit
+                                }
+                                color="primary"
+                                variant="raised"
+                                type="submit"
+                            >
                                 {submitText()}
                             </Button>
                         </Grid>
                     </Grid>
                 </form >
-            </Paper>
+            </Paper >
         );
     }
 }

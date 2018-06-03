@@ -36,7 +36,7 @@ function Folder(props) {
     for (var i in folder.tags) {
         const tag = folder.tags[i];
         tags.push(
-            <Button key={i}>
+            <Button key={i} href={"/tags/" + tag.name}>
                 {tag.name}
             </Button>
         )
@@ -49,15 +49,12 @@ function Folder(props) {
                         <p>{folder.title}</p>
                     </Typography>
                 </Grid>
-                <Grid item xs={12}><Divider /></Grid>
                 <Grid item xs={12}>
                     <p>{folder.caption}</p>
                 </Grid>
-                <Grid item xs={12}><Divider /></Grid>
                 <Grid item xs={12}>
                     {tags}
                 </Grid>
-                <Grid item xs={12}><Divider /></Grid>
                 <Grid item xs={12}>
                     <Button href={user.path}>
                         {user.display_name}

@@ -9,7 +9,8 @@ const IMAGES_MAX = 31 * 1024 * 1024;
 
 const styles = theme => ({
     root: {
-        position: "relative"
+        position: "relative",
+        padding: 16
     },
     preview_root: {
         padding: 16,
@@ -17,13 +18,13 @@ const styles = theme => ({
         border: "1px solid black",
         zIndex: 1,
         pointerEvents: "none",
-        width: "96%"
     },
     wrapper: {
         height: "160px",
         overflow: "hidden",
         textAlign: 'center',
-        padding: theme.spacing.unit * 2
+        position: "relative",
+        padding: 8,
     },
     input_file: {
         width: "100%",
@@ -131,6 +132,7 @@ class MultipleFileForm extends React.Component {
                             style={{ cursor: "pointer", pointerEvents: "auto" }}
                         >
                             <img src={createObjectURL(image)} width="100%" data-num={i} />
+
                         </Paper>
                     </Grid>
                 );
@@ -161,9 +163,10 @@ class MultipleFileForm extends React.Component {
                 return (
                     <Grid item sm={2}>
                         <Paper square className={classes.wrapper}>
-                            <Typography>
+                            <span width="100%"></span>
+                            <Typography >
                                 画像を追加する
-                                 </Typography>
+                            </Typography>
                             <DrawSize />
                         </Paper>
                     </Grid>

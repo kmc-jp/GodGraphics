@@ -17,35 +17,22 @@ class FoldersController < ApplicationController
     end
     def destroy
         id = params[:id]
-        Folder.find(id).destroy
+        folder = Folder.find(id).destoy
+        if folder.user.id != login_user.id then
+            return
+        else
+            Folder.find(id).destroy
+        end
     end
     def edit
         id = params[:id]
         @folder = Folder.find(id)
+        if @folder.user.id != login_user.id then
+            redirect_to "/"
+        end
     end
     def update
-        id = params[:id]
-        title = params[:title]
-        caption = params[:caption]
-        tags = params[:tags]
-
-        folder = Folder.find(id)
-        folder.update(title: title , caption: caption)
-
-        if tags then
-            folder_tags = []
-            params[:tags].each do |tag|
-                if Tag.exists?(:name => tag) then
-                    folder_tags.push( Tag.find_by(:name => tag) )
-                else
-                    folder_tags.push( Tag.create(name: tag) )
-                end
-            end
-            folder.tags = folder_tags
-        end 
-
-        folder.save
-
-        redirect_to "/folders/%d" % id
+        post_folder(params)
+        redirect_to "/folders/%d" % params[:id]
     end
 end

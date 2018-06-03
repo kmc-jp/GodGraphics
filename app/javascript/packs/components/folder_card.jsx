@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import Icon from '@material-ui/core/Icon';
+import Grid from '@material-ui/core/Grid';
 
 const styles = {
     card: {
@@ -18,10 +19,6 @@ const styles = {
         paddingTop: '56.25%', // 16:9
     },
 };
-
-const style = {
-    overflow: "hidden",
-}
 
 function FolderCard(props) {
 
@@ -52,7 +49,11 @@ function FolderCard(props) {
 
     return (
         <Card className={classes.card} >
-            <CardMedia className={classes.media} image={image.url.large} style={{ cursor: "pointer" }} onClick={handleClick}>
+            <CardMedia
+                className={classes.media}
+                image={image.url.large}
+                style={{ cursor: "pointer" }}
+                onClick={handleClick}>
             </CardMedia>
             <CardContent style={{ cursor: "pointer" }} onClick={handleClick}>
                 <Typography noWrap variant="headline">

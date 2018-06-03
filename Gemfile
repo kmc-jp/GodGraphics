@@ -61,3 +61,11 @@ gem "shrine", "~> 2.11"
 gem "image_processing", "~> 1.2"
 
 gem "active_decorator", "~> 1.0"
+
+gem "slack-ruby-client", "~> 0.11.1"
+
+gem "gyazo", "~> 2.1"
+
+gem "dotenv-rails", "~> 2.4"
+
+gem "http", "~> 3.3"

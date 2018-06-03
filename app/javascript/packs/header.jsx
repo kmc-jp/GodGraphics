@@ -26,7 +26,7 @@ class Header extends React.Component {
                         <Button color="inherit" href="/mypage">
                             マイページ
                         </Button>
-                        <Button color="inherit" href="/">
+                        <Button color="inherit" href="/tags">
                             タグ
                         </Button>
                     </Toolbar>

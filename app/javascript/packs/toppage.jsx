@@ -28,11 +28,9 @@ class Toppage extends React.Component {
 
     render() {
         return (
-            <div style={{ position: "absolute", top: "96px", width: "98%" }}>
-                <Paper style={{ padding: 16 }}>
-                    <Folders label="アップロードされた画像" folders={this.state.folders} />
-                </Paper>
-            </div>
+            <Paper style={{ position: "absolute", top: "96px", width: "96%", padding: 16 }}>
+                <Folders label="アップロードされた画像" folders={this.state.folders} />
+            </Paper>
         );
     }
 }
