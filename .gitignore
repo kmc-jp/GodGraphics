@@ -11,6 +11,11 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore DB
+/db/development
+/db/test
+/config/database.yml
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -36,3 +41,9 @@ yarn-debug.log*
 
 # bundler
 /vendor/bundle
+
+# mac
+.DS_Store
+
+# public
+/public
