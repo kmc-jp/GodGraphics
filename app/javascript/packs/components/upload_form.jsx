@@ -198,6 +198,7 @@ class UploadForm extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.editMode) return;
         fetch('./slack_channels', { method: 'get' }).then(response => {
             return response.json();
         }).then(data => {

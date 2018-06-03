@@ -8,11 +8,3 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker')
-require('./toppage.jsx')
-require('./uploadpage.jsx')
-require('./folderpage.jsx')
-require('./header.jsx')
-require('./userpage.jsx')
-require('./edit_folder_page.jsx')
-require('./tags_page.jsx')
-require('./tag_page.jsx')

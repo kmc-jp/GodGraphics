@@ -56,7 +56,7 @@ class InputTag extends React.Component {
     addTag(input) {
         var tags = this.state.tags;
         if (input === '') return;
-        var inputTag = input.split(' ').filter((x, i, self) => self.indexOf(x) === i);
+        var inputTag = input.trim().replace(/\s+/g, ' ').split(' ').filter((x, i, self) => self.indexOf(x) === i);
         if (tags.length > 0) {
             tags = [...tags, ...inputTag].filter((x, i, self) => self.indexOf(x) === i);
         } else {
@@ -114,7 +114,6 @@ class InputTag extends React.Component {
                 />
             );
         }
-        var test = "aaa";
         const selectTags = this.state.selectTags.filter((x, i, self) => {
             return !tags.includes(x.name) &&
                 x.name.startsWith(this.state.input);
