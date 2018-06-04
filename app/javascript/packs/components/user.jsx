@@ -34,7 +34,8 @@ class User extends React.Component {
 
     loadUser() {
         var folders = [];
-        fetch("/users/" + this.props.id + "/detail", { method: "get" }).then(response => {
+        if (!this.props.id || this.props.id < 1) return;
+        fetch("/users/" + this.props.id, { method: "get" }).then(response => {
             return response.json();
         }).then(json => {
             this.setState(json);
@@ -52,13 +53,19 @@ class User extends React.Component {
                                 {this.state.user.display_name}
                             </Typography>
                             <Typography>
-                                投稿枚数: {this.state.user.post_num}
+                                投稿枚数 : {this.state.user.post_num}
                             </Typography>
                         </Grid>
                     </Grid>
                 </ Paper>
                 <Paper className={classes.paper}>
-                    <Folders label="投稿画像" folders={this.state.user.folders} onDelete={this.loadUser} deletable={this.state.is_login_user} />
+                    <Folders
+                        label="投稿画像"
+                        folders={this.state.user.folders}
+                        onDelete={this.loadUser}
+                        deletable={this.state.is_login_user}
+                        history={this.props.history}
+                    />
                 </ Paper>
             </div>
         );

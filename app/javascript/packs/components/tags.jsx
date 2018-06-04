@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Divider } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
     root: {
@@ -24,7 +25,7 @@ class TagList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('./tags/all', { method: 'get' }).then(response => {
+        fetch('./tags', { method: 'get' }).then(response => {
             return response.json();
         }).then(data => {
             this.setState({
@@ -46,7 +47,7 @@ class TagList extends React.Component {
             var tag = tags[i];
             if (tag.folder_num < 1) continue;
             views.push(
-                <Button style={{ margin: 8 }} key={i} href={"/tags/" + tag.name}>
+                <Button style={{ margin: 8 }} key={i} component={Link} to={"/tags/" + tag.id}>
                     {tag.name}{"(" + tag.folder_num + ")"}
                 </Button>
             )

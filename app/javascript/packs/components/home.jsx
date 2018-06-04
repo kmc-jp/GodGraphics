@@ -1,25 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Folders from './components/folders'
+import Folders from './folders'
 import Grid from '@material-ui/core/Grid'
 import { Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles'
 
-class Toppage extends React.Component {
+const styles = theme => ({
+
+});
+
+class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             folders: []
         }
-        this.loadAll = this.loadAll.bind(this);
     }
-
     componentDidMount() {
-        this.loadAll();
-    }
-
-    loadAll() {
         var folders = [];
-        fetch("/folders", { method: "get" }).then(response => {
+        var path = "/folders/" + ((this.props.id) ? this.props.id : '');
+        fetch(path, { method: "get" }).then(response => {
             return response.json();
         }).then(json => {
             this.setState({ folders: json });
@@ -29,13 +29,14 @@ class Toppage extends React.Component {
     render() {
         return (
             <Paper style={{ position: "absolute", top: "96px", width: "96%", padding: 16 }}>
-                <Folders label="アップロードされた画像" folders={this.state.folders} />
+                <Folders
+                    label="アップロードされた画像"
+                    folders={this.state.folders}
+                    history={this.props.history}
+                />
             </Paper>
         );
     }
 }
 
-ReactDOM.render(
-    <Toppage />,
-    document.getElementById("toppage")
-)
+export default withStyles(styles)(Home);

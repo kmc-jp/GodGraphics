@@ -73,5 +73,6 @@ export default class LimitedInput extends React.Component {
 
 LimitedInput.propTypes = {
     label: PropTypes.string.isRequired,
-    max: PropTypes.number.isRequired
+    max: PropTypes.number.isRequired,
+    updateInput: PropTypes.func.isRequired
 }

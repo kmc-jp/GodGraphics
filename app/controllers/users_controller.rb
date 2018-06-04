@@ -1,11 +1,10 @@
 class UsersController < ApplicationController
     def me
-        @user = login_user
-        render "users/show"
+        render :json => login_user.as_json
     end
     def show
         id = params[:id]
-        @user = User.find(id)
+        render :json => User.find(id).as_json
     end
     def detail
         id = params[:id].to_i

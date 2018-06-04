@@ -1,9 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+
+});
 
 class Header extends React.Component {
     constructor(props) {
@@ -15,18 +20,18 @@ class Header extends React.Component {
             <header>
                 <AppBar>
                     <Toolbar>
-                        <Button href="/" color="inherit">
+                        <Button color="inherit" component={Link} to='/'>
                             <Typography variant="title" color="inherit">
-                                God Graphic Uploader
+                                God Graphics Uploader
                             </Typography>
                         </Button>
-                        <Button color="inherit" href="/upload">
+                        <Button color="inherit" component={Link} to='/upload'>
                             投稿
                         </Button>
-                        <Button color="inherit" href="/mypage">
+                        <Button color="inherit" component={Link} to='/mypage'>
                             マイページ
                         </Button>
-                        <Button color="inherit" href="/tags">
+                        <Button color="inherit" component={Link} to='/tags'>
                             タグ
                         </Button>
                     </Toolbar>
@@ -36,9 +41,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
-
-ReactDOM.render(
-    <Header />,
-    document.getElementById('header')
-)
+export default withStyles(styles)(Header);

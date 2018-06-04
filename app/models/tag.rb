@@ -7,6 +7,6 @@ class Tag < ApplicationRecord
     end
 
     def as_json(options =  {})
-        super( :methods => [:folder_num] , :include => [:folders] )
+        super( :methods => [:folder_num] , :include => [:folders => {:methods => [:images]}] )
     end
 end

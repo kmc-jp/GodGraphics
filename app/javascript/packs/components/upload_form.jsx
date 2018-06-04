@@ -149,15 +149,16 @@ class UploadForm extends React.Component {
             formData.append("tags[]", tags.tags[i]);
         }
         if (this.props.id) formData.append("id", this.props.id);
-        formData.append("post_slack", this.state.postSlack);
-        formData.append("post_slack_channel", this.state.postSlackChannel);
-
+        if (this.state.postSlack) {
+            formData.append("post_slack", 'true');
+            formData.append("post_slack_channel", this.state.postSlackChannel);
+        }
         const path = this.props.editMode ? './update' : './upload';
         fetch(path, {
             body: formData,
             method: 'post',
         }).then(response => {
-            window.location.href = response.url;
+            this.props.history.push('/');
         })
     }
 
@@ -212,7 +213,7 @@ class UploadForm extends React.Component {
         const { classes } = this.props;
 
         var submitText = () => { return this.props.editMode ? "更新" : "投稿"; }
-
+        var folder = this.props.folder;
         return (
             <Paper className={classes.root}>
                 <form onSubmit={this.handleSubmit} >
@@ -221,7 +222,7 @@ class UploadForm extends React.Component {
                             <MultipleFileForm
                                 name="images"
                                 updateInput={this.updateInput}
-                                images={this.props.images}
+                                images={folder ? folder.images : null}
                                 editMode={this.props.editMode}
                             />
                         </Grid>
@@ -232,7 +233,7 @@ class UploadForm extends React.Component {
                                 label="タイトル"
                                 max={TITLE_MAX}
                                 updateInput={this.updateInput}
-                                text={this.props.title}
+                                text={folder ? folder.title : null}
                                 fullWidth
                             />
                         </Grid>
@@ -246,14 +247,14 @@ class UploadForm extends React.Component {
                                 fullWidth
                                 updateInput={this.updateInput}
                                 allowEmpty
-                                text={this.props.caption}
+                                text={folder ? folder.caption : null}
                             />
                         </Grid>
                         <Grid item sm={8}>
                             <InputTag
                                 name="tags"
                                 updateState={this.updateInput}
-                                tags={this.props.tags}
+                                tags={folder ? folder.tags : null}
                             />
                         </Grid>
                         <Grid item sm={4} >
@@ -301,8 +302,7 @@ class UploadForm extends React.Component {
                             </div>
                             < Button
                                 fullWidth
-                                disabled={!this.state.can_submit
-                                }
+                                disabled={!this.state.can_submit}
                                 color="primary"
                                 variant="raised"
                                 type="submit"

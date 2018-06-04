@@ -86,7 +86,7 @@ class InputTag extends React.Component {
     }
 
     loadTags() {
-        fetch("./tags/all", { method: "get" }).then(response => {
+        fetch("./tags", { method: "get" }).then(response => {
             return response.json();
         }).then(data => {
             this.setState({
@@ -109,7 +109,7 @@ class InputTag extends React.Component {
                 <Chip
                     key={i}
                     onDelete={(e) => { this.deleteTag(e, num) }}
-                    label={tags[i]}
+                    label={tags[i].name}
                     className={classes.chip}
                 />
             );
