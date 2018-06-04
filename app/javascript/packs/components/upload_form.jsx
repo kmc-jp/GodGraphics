@@ -16,6 +16,7 @@ import { MenuItem } from '@material-ui/core';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField'
+import api from "./api";
 
 const styles = theme => ({
 
@@ -146,19 +147,19 @@ class UploadForm extends React.Component {
         formData.append("caption", caption);
 
         for (var i in tags.tags) {
-            formData.append("tags[]", tags.tags[i]);
+            formData.append("tags[]", tags.tags[i].name);
         }
         if (this.props.id) formData.append("id", this.props.id);
         if (this.state.postSlack) {
             formData.append("post_slack", 'true');
             formData.append("post_slack_channel", this.state.postSlackChannel);
         }
-        const path = this.props.editMode ? './update' : './upload';
-        fetch(path, {
+        const path = this.props.editMode ? './folders/' + this.props.folder.id + '/update' : './upload';
+        api(path, {
             body: formData,
             method: 'post',
         }).then(response => {
-            this.props.history.push('/');
+            this.props.history.push('/folders/' + response.id);
         })
     }
 
@@ -200,9 +201,7 @@ class UploadForm extends React.Component {
 
     componentDidMount() {
         if (this.props.editMode) return;
-        fetch('./slack_channels', { method: 'get' }).then(response => {
-            return response.json();
-        }).then(data => {
+        api('./upload/slack_channels', { method: 'get' }).then(data => {
             this.setState({
                 slackChannels: data
             });

@@ -1,5 +1,6 @@
 import React from 'react';
 import UploadForm from "./upload_form";
+import api from "./api";
 
 class EditFolderForm extends React.Component {
     constructor(props) {
@@ -11,9 +12,7 @@ class EditFolderForm extends React.Component {
     }
 
     componentDidMount() {
-        fetch('./', { method: 'get' }).then(response => {
-            return response.json();
-        }).then(data => {
+        api('./folders/' + this.props.match.params.id, { method: 'get' }).then(data => {
             this.setState({
                 folder: data,
                 loading: false

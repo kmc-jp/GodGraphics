@@ -1,4 +1,4 @@
-class TagsController < ApplicationController
+class Api::TagsController < ApplicationController
     def show
         id = params[:id]
         tag = Tag.includes(:folders).find(id)

@@ -95,12 +95,6 @@ class ApplicationController < ActionController::Base
                 attachments: attachments
             )
         end
-
-    end
-
-    def slack_channels
-        client = Slack::Web::Client.new
-        channels = client.channels_list.channels
-        render :json => channels.map { |channel| channel.name }
+        return folder
     end
 end

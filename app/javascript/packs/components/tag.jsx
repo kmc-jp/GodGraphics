@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Folders from './folders';
 import { withStyles } from '@material-ui/core/styles';
 import { decode } from 'punycode';
+import api from "./api";
 
 const styles = theme => ({
 
@@ -23,9 +24,7 @@ class Tag extends React.Component {
 
     loadFolders() {
         var folders = [];
-        fetch("./" + this.props.match.params.id, { method: "get" }).then(response => {
-            return response.json();
-        }).then(json => {
+        api("./tags/" + this.props.match.params.id, { method: "get" }).then(json => {
             this.setState(json);
         });
     }

@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
+import api from "./api";
 
 const styles = theme => ({
     root: {
@@ -27,9 +28,7 @@ class Folder extends React.Component {
     }
 
     componentDidMount() {
-        fetch('./' + this.props.match.params.id, { method: 'get' }).then(response => {
-            return response.json();
-        }).then(data => {
+        api('./folders/' + this.props.match.params.id, { method: 'get' }).then(data => {
             this.setState({
                 folder: data,
                 loading: false
