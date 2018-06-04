@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { Divider } from '@material-ui/core';
+import api from "./api";
 
 const styles = theme => ({
     root: {
@@ -23,7 +24,7 @@ class Folders extends React.Component {
     }
 
     deleteFolder(folder) {
-        fetch("./folders/" + folder.id, {
+        api("./folders/" + folder.id, {
             method: "delete"
         }).then(response => {
             if (this.props.onDelete) this.props.onDelete();

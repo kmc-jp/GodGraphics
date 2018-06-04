@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Chip from '@material-ui/core/Chip'
 import { Divider, Paper } from '@material-ui/core';
+import api from "./api";
 
 const styles = theme => ({
     chip: {
@@ -56,7 +57,7 @@ class InputTag extends React.Component {
     addTag(input) {
         var tags = this.state.tags;
         if (input === '') return;
-        var inputTag = input.trim().replace(/\s+/g, ' ').split(' ').filter((x, i, self) => self.indexOf(x) === i);
+        var inputTag = input.trim().replace(/\s+/g, ' ').split(' ').filter((x, i, self) => self.indexOf(x) === i).map(x => { return { name: x } });
         if (tags.length > 0) {
             tags = [...tags, ...inputTag].filter((x, i, self) => self.indexOf(x) === i);
         } else {
@@ -64,7 +65,7 @@ class InputTag extends React.Component {
         }
         var state = ({
             input: "",
-            tags: tags,
+            tags: tags
         });
         this.updateState(state);
     }
@@ -86,9 +87,7 @@ class InputTag extends React.Component {
     }
 
     loadTags() {
-        fetch("./tags", { method: "get" }).then(response => {
-            return response.json();
-        }).then(data => {
+        api("./tags", { method: "get" }).then(data => {
             this.setState({
                 selectTags: data
             });
@@ -114,8 +113,9 @@ class InputTag extends React.Component {
                 />
             );
         }
+        const names = tags.map(x => x.name)
         const selectTags = this.state.selectTags.filter((x, i, self) => {
-            return !tags.includes(x.name) &&
+            return !names.includes(x.name) &&
                 x.name.startsWith(this.state.input);
         });
         var items = [];

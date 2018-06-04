@@ -1,4 +1,4 @@
-class FoldersController < ApplicationController
+class Api::FoldersController < ApplicationController
     protect_from_forgery except: :destroy
     protect_from_forgery except: :update
 
@@ -19,6 +19,7 @@ class FoldersController < ApplicationController
         else
             Folder.find(id).destroy
         end
+        render :json => { success: true }
     end
     def edit
         id = params[:id]
@@ -28,7 +29,7 @@ class FoldersController < ApplicationController
         end
     end
     def update
-        post_folder(params)
-        redirect_to "/folders/%d" % params[:id]
+        folder = post_folder(params)
+        render :json => { id: folder.id }
     end
 end

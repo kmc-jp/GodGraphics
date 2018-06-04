@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider'
+import api from "./api";
 
 const styles = theme => ({
     root: {
@@ -35,9 +36,7 @@ class User extends React.Component {
     loadUser() {
         var folders = [];
         if (!this.props.id || this.props.id < 1) return;
-        fetch("/users/" + this.props.id, { method: "get" }).then(response => {
-            return response.json();
-        }).then(json => {
+        api("./users/" + this.props.id, { method: "get" }).then(json => {
             this.setState(json);
         });
     }

@@ -8,6 +8,7 @@ import UploadForm from './upload_form'
 import Folder from './folder'
 import EditFolderForm from './edit_folder_form'
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
+import api from "./api";
 
 const styles = theme => ({
 
@@ -22,10 +23,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        fetch("./me", { method: 'get' }).then(response => {
-            console.log(response);
-            return response.json();
-        }).then(data => {
+        api("./users/me", { method: 'get' }).then(data => {
             this.setState({
                 loginID: data.id
             });

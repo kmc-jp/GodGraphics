@@ -1,6 +1,6 @@
 # coding: utf-8
 
-class ImagesController < ApplicationController
+class Api::ImagesController < ApplicationController
     def show
         id = params[:id]
         @image = Image.find(id)

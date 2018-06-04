@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom'
+import api from "./api";
 
 const styles = theme => ({
     root: {
@@ -25,9 +26,7 @@ class TagList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('./tags', { method: 'get' }).then(response => {
-            return response.json();
-        }).then(data => {
+        api('./tags', { method: 'get' }).then(data => {
             this.setState({
                 tags: data
             });
