@@ -10,6 +10,7 @@ import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
 
 const styles = {
     card: {
@@ -27,7 +28,7 @@ function FolderCard(props) {
     const image = folder.images[0];
     let handleClick = (e) => {
         var target = e.target;
-        window.location.href = folder.path;
+        props.history.push('/folders/' + folder.id);
     };
 
     let EditPane = () => {
@@ -37,7 +38,7 @@ function FolderCard(props) {
                     <Button size="small" color="secondary" onClick={() => (props.onDelete(folder))}>
                         <Delete />
                     </Button>
-                    <Button size="small" color="primary" href={folder.edit_path}>
+                    <Button size="small" color="primary" component={Link} to={"/folders/" + folder.id + "/edit"}>
                         <Edit />
                     </Button>
                 </CardActions>

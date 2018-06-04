@@ -16,6 +16,9 @@ class Folders extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            folders: []
+        }
         this.deleteFolder = this.deleteFolder.bind(this);
     }
 
@@ -39,7 +42,13 @@ class Folders extends React.Component {
             const folder = folders[i];
             cards.push(
                 <Grid item xs={4} sm={3} key={i}>
-                    <FolderCard folder={folder} key={i} onDelete={this.deleteFolder} deletable={this.props.deletable} />
+                    <FolderCard
+                        folder={folder}
+                        key={i}
+                        onDelete={this.deleteFolder}
+                        deletable={this.props.deletable}
+                        history={this.props.history}
+                    />
                 </Grid>
             );
         }

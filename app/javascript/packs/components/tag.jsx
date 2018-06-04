@@ -1,9 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Paper from '@material-ui/core/Paper';
-import Folders from './components/folders';
+import Folders from './folders';
+import { withStyles } from '@material-ui/core/styles';
+import { decode } from 'punycode';
 
-class TagPage extends React.Component {
+const styles = theme => ({
+
+})
+
+class Tag extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,10 +23,10 @@ class TagPage extends React.Component {
 
     loadFolders() {
         var folders = [];
-        fetch("/tags/" + this.props.id + "/folders", { method: "get" }).then(response => {
+        fetch("./" + this.props.match.params.id, { method: "get" }).then(response => {
             return response.json();
         }).then(json => {
-            this.setState({ folders: json });
+            this.setState(json);
         });
     }
 
@@ -29,20 +34,13 @@ class TagPage extends React.Component {
         return (
             <Paper style={{ position: "absolute", top: "96px", width: "96%", padding: 16 }}>
                 <Folders
-                    label={this.props.name}
+                    label={this.state.name}
                     folders={this.state.folders}
+                    history={this.props.history}
                 />
             </Paper>
         );
     }
 }
 
-var dom = document.querySelector("#container");
-
-ReactDOM.render(
-    <TagPage
-        id={dom.getAttribute("data-id")}
-        name={dom.getAttribute("data-name")}
-    />,
-    document.querySelector("#container")
-);
+export default withStyles(styles)(Tag)

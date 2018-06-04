@@ -7,4 +7,17 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
+console.log('ここを見つけた先着一名の学部生のあなたにこのアプリ引き継ぐ権利をプレゼント！！！')
+import React from "react";
+import ReactDOM from 'react-dom';
+import App from './components/app';
+import { BrowserRouter } from 'react-router-dom';
+
+document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.render((
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    ), document.getElementById('container')
+    );
+});

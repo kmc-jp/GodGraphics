@@ -55,48 +55,47 @@ class ApplicationController < ActionController::Base
         end 
         folder.tags = folder_tags
 
-        attachments = []
-        count = 0
-        folder.images.each do |image|
-            response = HTTP.post("https://upload.gyazo.com/api/upload", :params => {
-                access_token: ENV['GYAZO_TOKEN'],
-                title: folder.title
-            },:form => {
-                :imagedata   => HTTP::FormData::File.new("./public/" + image.image[:small].url)
-            })
-            res = JSON.parse(response.body.to_s)
-            if ( count == 0 )
-                attachments.push({
-                    "author_name": user.display_name,
-                    "title": folder.title,
-                    "title_link": request.url + "/folders/" + folder.id.to_s,
-                    "text": folder.caption,
-                    "image_url": res['url'],
-                    "footer": "God Graphics Uploader",
-                    "ts": Time.now.to_i
-                });
-            else 
-                attachments.push({
-                    "text": folder.title + ' ' + (count+1).to_s,
-                    "image_url": res['url'],
-                });
-                end
-            count = count + 1
+        if post_slack then
+            attachments = []
+            count = 0
+            folder.images.each do |image|
+                response = HTTP.post("https://upload.gyazo.com/api/upload", :params => {
+                    access_token: ENV['GYAZO_TOKEN'],
+                    title: folder.title
+                },:form => {
+                    :imagedata   => HTTP::FormData::File.new("./public/" + image.image[:small].url)
+                })
+                res = JSON.parse(response.body.to_s)
+                if ( count == 0 )
+                    attachments.push({
+                        "author_name": user.display_name,
+                        "title": folder.title,
+                        "title_link": request.url + "/folders/" + folder.id.to_s,
+                        "text": folder.caption,
+                        "image_url": res['url'],
+                        "footer": "God Graphics Uploader",
+                        "ts": Time.now.to_i
+                    });
+                else 
+                    attachments.push({
+                        "text": folder.title + ' ' + (count+1).to_s,
+                        "image_url": res['url'],
+                    });
+                    end
+                count = count + 1
+            end
+
+            client = Slack::Web::Client.new
+            client.chat_postMessage(
+                channel: '#' + post_slack_channel,
+                text: user.display_name + 'の新しい絵です！',
+                as_user: false,
+                username: 'God Graphics Uploader',
+                icon_emoji: ':godicon:',
+                attachments: attachments
+            )
         end
 
-        client = Slack::Web::Client.new
-        client.chat_postMessage(
-            channel: '#' + post_slack_channel,
-            text: user.display_name + 'の新しい絵です！',
-            as_user: false,
-            username: 'God Graphics Uploader',
-            icon_emoji: ':godicon:',
-            attachments: attachments
-        )
-
-    end
-
-    def index
     end
 
     def slack_channels

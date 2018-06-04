@@ -112,7 +112,7 @@ class MultipleFileForm extends React.Component {
                             className={classes.wrapper}
                             key={i}
                         >
-                            <img src={image} width="100%" />
+                            <img src={image.url.medium} width="100%" />
                         </Paper>
                     </Grid>
                 );
