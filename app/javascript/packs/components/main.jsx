@@ -7,6 +7,7 @@ import Tags from './tags'
 import UploadForm from './upload_form'
 import Folder from './folder'
 import EditFolderForm from './edit_folder_form'
+import EditUserForm from './edit_user_form'
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
 import api from "./api";
 
@@ -18,14 +19,14 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginID: 0
+            login_id: 0
         }
     }
 
     componentDidMount() {
         api("./users/me", { method: 'get' }).then(data => {
             this.setState({
-                loginID: data.id
+                login_id: data.id
             });
         });
     }
@@ -34,13 +35,15 @@ class Main extends React.Component {
         return (
             <Switch>
                 <Route exact path='/' component={Home} />
-                <Route path='/mypage' component={(props) => <User id={this.state.loginID} {...props} />} />
-                <Route path='/users/:id' component={(props) => <User id={this.state.loginID} {...props} />} />
+                <Route exact path='/mypage' component={(props) => <User id={this.state.login_id} {...props} />} />
+                <Route path='/mypage/edit' component={(props) => <EditUserForm login_id={this.state.login_id} id={this.state.login_id} {...props} />} />
+                <Route exact path='/users/:id' component={User} />
+                <Route path='/users/:id/edit' component={(props) => <EditUserForm login_id={this.state.login_id}{...props} />} />
                 <Route exact path='/tags' component={Tags} />
                 <Route path='/tags/:id' component={Tag} />
                 <Route path='/upload' component={UploadForm} />
                 <Route exact path='/folders/:id' component={Folder} />
-                <Route path='/folders/:id/edit' component={EditFolderForm} />
+                <Route path='/folders/:id/edit' component={(props) => <EditFolderForm login_id={this.state.login_id} {...props} />} />
             </Switch>
         );
     }
