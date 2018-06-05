@@ -6,16 +6,15 @@ Rails.application.routes.draw do
   namespace :api do
     get '/upload/slack_channels', to: 'upload#slack_channels'
     get '/users/me', to: 'users#me'
+    post '/users/:id/update' , to: 'users#update'
     post '/upload', to:'upload#post' 
     post '/folders/:id/update', to: 'folders#update'
-    get '/users/:id' , to: 'users#detail'
     delete '/folders/:id', to: 'folders#destroy'
-    get '/tags/:id', to: 'tags#show'
     get '/folders/:id/tags', to: 'tags#index'
     resources :folders , only: [:index,:show,:edit,:destroy]
     resources :images , only: [:index,:show]
     resources :users, only: [:index,:show,:edit]
-    resources :tags, only: [:index]
+    resources :tags, only: [:index,:show]
   end
   
   # それ以外はすべて
