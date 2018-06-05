@@ -55,10 +55,9 @@ class MultipleFileForm extends React.Component {
         const reg = /^image\/*/;
         const files = e.target.files;
         var images = this.state.images;
-        for (var i = 0; i < files.length; ++i) {
-            const file = files[i];
+        [...files].map((file, i) => {
             if (file.type.match(reg)) images.push(file);
-        }
+        });
         this.updateState(images);
     }
 
@@ -75,9 +74,9 @@ class MultipleFileForm extends React.Component {
 
     updateState(images) {
         var size = 0;
-        for (var i = 0; i < images.length; ++i) {
-            size += images[i].size;
-        }
+        size = images.reduce((acc, image) => {
+            return acc + image.size
+        }, 0);
 
         var state = {
             images: images,
@@ -100,43 +99,34 @@ class MultipleFileForm extends React.Component {
         const { classes } = this.props;
         var createObjectURL = (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
         var previews = [];
-        var inputs = [];
         if (this.props.editMode) {
-            const images = this.props.images;
-            for (var i in images) {
-                var image = images[i];
-                previews.push(
-                    <Grid item sm={2} key={i}>
-                        <Paper
-                            square
-                            className={classes.wrapper}
-                            key={i}
-                        >
-                            <img src={image.url.medium} width="100%" />
-                        </Paper>
-                    </Grid>
-                );
-            }
+            previews = this.props.images.map((image, i) => (
+                <Grid item sm={2} key={i}>
+                    <Paper
+                        square
+                        className={classes.wrapper}
+                        key={i}
+                    >
+                        <img src={image.url.medium} width="100%" />
+                    </Paper>
+                </Grid>
+            ));
         } else {
-            const images = this.state.images;
-            for (var i in images) {
-                var image = images[i];
-                previews.push(
-                    <Grid item sm={2} key={i}>
-                        <Paper
-                            square
-                            className={classes.wrapper}
-                            key={i}
-                            data-num={i}
-                            onClick={this.handleClick}
-                            style={{ cursor: "pointer", pointerEvents: "auto" }}
-                        >
-                            <img src={createObjectURL(image)} width="100%" data-num={i} />
+            previews = this.state.images.map((image, i) => (
+                <Grid item sm={2} key={i}>
+                    <Paper
+                        square
+                        className={classes.wrapper}
+                        key={i}
+                        data-num={i}
+                        onClick={this.handleClick}
+                        style={{ cursor: "pointer", pointerEvents: "auto" }}
+                    >
+                        <img src={createObjectURL(image)} width="100%" data-num={i} />
 
-                        </Paper>
-                    </Grid>
-                );
-            }
+                    </Paper>
+                </Grid>
+            ));
         }
 
 

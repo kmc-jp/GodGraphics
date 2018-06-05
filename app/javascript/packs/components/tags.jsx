@@ -35,22 +35,18 @@ class TagList extends React.Component {
 
     render() {
         const { classes } = this.props;
-        var views = [];
-        const tags = this.state.tags.sort((a, b) => {
+        const views = this.state.tags.filter((x) => {
+            return x.folder_num > 0;
+        }).sort((a, b) => {
             if (a.folder_num < b.folder_num) return 1;
             if (a.folder_num > b.folder_num) return -1;
             return 0;
-        });
+        }).map((tag, i) => (
+            <Button style={{ margin: 8 }} key={i} component={Link} to={"/tags/" + tag.id}>
+                {tag.name}{"(" + tag.folder_num + ")"}
+            </Button>
+        ));
 
-        for (var i in tags) {
-            var tag = tags[i];
-            if (tag.folder_num < 1) continue;
-            views.push(
-                <Button style={{ margin: 8 }} key={i} component={Link} to={"/tags/" + tag.id}>
-                    {tag.name}{"(" + tag.folder_num + ")"}
-                </Button>
-            )
-        }
         return (
             <Paper className={classes.root}>
                 <Typography variant="title" style={{ textAlign: "center" }}>

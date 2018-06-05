@@ -42,26 +42,18 @@ class Folder extends React.Component {
         const images = this.state.folder.images;
         const folder = this.state.folder;
         const user = this.state.folder.user;
-        var views = [];
-        for (var i in images) {
-            const image = images[i];
-            views.push(
-                <div key={i}>
-                    <Button href={image.url.original}>
-                        <img src={image.url.large} />
-                    </Button>
-                </div>
-            );
-        }
-        var tags = [];
-        for (var i in folder.tags) {
-            const tag = folder.tags[i];
-            tags.push(
-                <Button key={i} component={Link} to={"/tags/" + tag.id}>
-                    {tag.name}
+        var views = images.map((image, i) => (
+            <div key={i}>
+                <Button href={image.url.original}>
+                    <img src={image.url.large} />
                 </Button>
-            )
-        }
+            </div>
+        ));
+        var tags = folder.tags.map((tag, i) => (
+            <Button key={i} component={Link} to={"/tags/" + tag.id}>
+                {tag.name}
+            </Button>
+        ));
         return (
             <Paper className={classes.root}>
                 <Grid container spacing={8}>
