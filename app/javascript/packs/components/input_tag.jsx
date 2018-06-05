@@ -101,35 +101,34 @@ class InputTag extends React.Component {
     render() {
         const { classes } = this.props;
         const tags = this.state.tags;
-        var views = [];
-        for (var i in tags) {
+        var views = tags.map((tag, i) => {
             const num = i;
-            views.push(
+            return (
                 <Chip
                     key={i}
                     onDelete={(e) => { this.deleteTag(e, num) }}
-                    label={tags[i].name}
+                    label={tag.name}
                     className={classes.chip}
                 />
             );
-        }
+        });
         const names = tags.map(x => x.name)
         const selectTags = this.state.selectTags.filter((x, i, self) => {
             return !names.includes(x.name) &&
                 x.name.startsWith(this.state.input);
         });
-        var items = [];
-        for (var i in selectTags) {
-            const name = selectTags[i].name;
-            items.push(
+        var items = selectTags.map((tag, i) => {
+            const name = tag.name;
+            return (
                 <Chip
                     className={classes.chip}
                     key={i}
                     onClick={(e) => this.handleSelectTag(e, name)}
-                    label={selectTags[i].name}
+                    label={name}
                 />
             );
-        }
+        });
+
         return (
             <div>
                 <Grid container>

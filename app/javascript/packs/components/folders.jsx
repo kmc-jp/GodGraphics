@@ -38,21 +38,17 @@ class Folders extends React.Component {
             if (a.created_at < b.created_at) return 1;
             return 0;
         });
-        var cards = [];
-        for (var i in folders) {
-            const folder = folders[i];
-            cards.push(
-                <Grid item xs={4} sm={3} key={i}>
-                    <FolderCard
-                        folder={folder}
-                        key={i}
-                        onDelete={this.deleteFolder}
-                        deletable={this.props.deletable}
-                        history={this.props.history}
-                    />
-                </Grid>
-            );
-        }
+        var cards = folders.map((folder, i) => (
+            <Grid item xs={4} sm={3} key={i}>
+                <FolderCard
+                    folder={folder}
+                    key={i}
+                    onDelete={this.deleteFolder}
+                    deletable={this.props.deletable}
+                    history={this.props.history}
+                />
+            </Grid>
+        ));
         return (
             <div classes={classes.root} padding={20}>
                 <div style={{ padding: 8 }} >
