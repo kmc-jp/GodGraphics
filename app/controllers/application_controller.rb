@@ -1,3 +1,4 @@
+#coding: utf-8
 class ApplicationController < ActionController::Base
     def remote_user
         ret = request.env["REMOTE_USER"] || request.env['HTTP_X_FORWARDED_USER']
@@ -56,45 +57,24 @@ class ApplicationController < ActionController::Base
         folder.tags = folder_tags
 
         if post_slack then
-            attachments = []
-            count = 0
+            image_urls = []
+            gyazo = MyAssets::MyGyazo.new( ENV['GYAZO_TOKEN'] )
+            slack = MyAssets::MySlack.new
+
             folder.images.each do |image|
-                response = HTTP.post("https://upload.gyazo.com/api/upload", :params => {
-                    access_token: ENV['GYAZO_TOKEN'],
-                    title: folder.title
-                },:form => {
-                    :imagedata   => HTTP::FormData::File.new("./public/" + image.image[:small].url)
-                })
-                res = JSON.parse(response.body.to_s)
-                if ( count == 0 )
-                    attachments.push({
-                        "author_name": user.display_name,
-                        "title": folder.title,
-                        "title_link": request.url + "/folders/" + folder.id.to_s,
-                        "text": folder.caption,
-                        "image_url": res['url'],
-                        "footer": "God Graphics Uploader",
-                        "ts": Time.now.to_i
-                    });
-                else 
-                    attachments.push({
-                        "text": folder.title + ' ' + (count+1).to_s,
-                        "image_url": res['url'],
-                    });
-                    end
-                count = count + 1
+                res = gyazo.post( folder.title , "./public/" + image.image[:medium].url )
+                image_urls.push(res)
             end
 
-            client = Slack::Web::Client.new
-            client.chat_postMessage(
-                channel: '#' + post_slack_channel,
-                text: user.display_name + 'の新しい絵です！',
-                as_user: false,
-                username: 'God Graphics Uploader',
-                icon_emoji: ':godicon:',
-                attachments: attachments
+            slack.post(
+                channel: post_slack_channel,
+                user: user,
+                folder: folder,
+                image_urls: image_urls,
+                base_url: request.url #もうちょっとなんとかしたい
             )
-        end
+
+         end
         return folder
     end
 end
