@@ -25,7 +25,9 @@ class Tag extends React.Component {
     loadFolders() {
         var folders = [];
         api("./tags/" + this.props.match.params.id, { method: "get" }).then(json => {
-            this.setState(json);
+            try {
+                this.setState(json);
+            } catch (ex) { }
         });
     }
 

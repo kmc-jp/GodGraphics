@@ -15,10 +15,13 @@ class EditFolderForm extends React.Component {
         api('./folders/' + this.props.match.params.id, { method: 'get' }).then(data => {
             if (this.props.login_id != data.user.id) this.props.history.push('/');
             else {
-                this.setState({
-                    folder: data,
-                    loading: false
-                })
+                try {
+                    this.setState({
+                        folder: data,
+                        loading: false
+                    })
+                } catch (ex) {
+                }
             }
         });
     }

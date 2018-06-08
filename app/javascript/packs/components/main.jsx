@@ -25,9 +25,11 @@ class Main extends React.Component {
 
     componentDidMount() {
         api("./users/me", { method: 'get' }).then(data => {
-            this.setState({
-                login_id: data.id
-            });
+            try {
+                this.setState({
+                    login_id: data.id
+                });
+            } catch (ex) { }
         });
     }
 

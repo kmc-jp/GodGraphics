@@ -22,7 +22,9 @@ class Home extends React.Component {
         var path = "./folders/" + ((this.props.id) ? this.props.id : '');
 
         api(path, { method: "get" }).then(json => {
-            this.setState({ folders: json });
+            try {
+                this.setState({ folders: json });
+            } catch (ex) { }
         });
     }
 

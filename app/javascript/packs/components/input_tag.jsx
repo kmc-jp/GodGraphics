@@ -88,9 +88,11 @@ class InputTag extends React.Component {
 
     loadTags() {
         api("./tags", { method: "get" }).then(data => {
-            this.setState({
-                selectTags: data
-            });
+            try {
+                this.setState({
+                    selectTags: data
+                });
+            } catch (ex) { }
         });
     }
 

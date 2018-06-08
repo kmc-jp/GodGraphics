@@ -27,9 +27,13 @@ class TagList extends React.Component {
 
     componentDidMount() {
         api('./tags', { method: 'get' }).then(data => {
-            this.setState({
-                tags: data
-            });
+            try {
+                this.setState({
+                    tags: data
+                });
+            } catch (ex) {
+
+            }
         })
     }
 

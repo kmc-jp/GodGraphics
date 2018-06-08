@@ -202,10 +202,13 @@ class UploadForm extends React.Component {
     componentDidMount() {
         if (this.props.editMode) return;
         api('./upload/slack_channels', { method: 'get' }).then(data => {
-            this.setState({
-                slackChannels: data
-            });
-        })
+            try {
+                this.setState({
+                    slackChannels: data
+                });
+            } catch (ex) {
+            }
+        });
     }
 
     render() {

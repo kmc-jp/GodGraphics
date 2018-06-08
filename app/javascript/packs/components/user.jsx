@@ -39,10 +39,13 @@ class User extends React.Component {
         const id = (!this.props.id || this.props.id < 1) ? this.props.match.params.id : this.props.id;
         if (!id) return;
         api("./users/" + id, { method: "get" }).then(json => {
-            this.setState({
-                user: json.user,
-                is_login_user: json.is_login_user
-            });
+            try {
+                this.setState({
+                    user: json.user,
+                    is_login_user: json.is_login_user
+                });
+            } catch (ex) {
+            }
         });
     }
 

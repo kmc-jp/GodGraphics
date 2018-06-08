@@ -29,10 +29,12 @@ class Folder extends React.Component {
 
     componentDidMount() {
         api('./folders/' + this.props.match.params.id, { method: 'get' }).then(data => {
-            this.setState({
-                folder: data,
-                loading: false
-            });
+            try {
+                this.setState({
+                    folder: data,
+                    loading: false
+                });
+            } catch (ex) { }
         });
     }
 
